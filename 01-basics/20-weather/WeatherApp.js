@@ -4,12 +4,20 @@ import { getWeatherData, WeatherConditionIcons } from './weather.service.ts'
 export default defineComponent({
   name: 'WeatherApp',
 
+  setup() {
+    const weatherData = getWeatherData()
+    return {
+      weatherData,
+      WeatherConditionIcons
+    }
+  },
+
   template: `
     <div>
       <h1 class="title">Погода в Средиземье</h1>
 
       <ul class="weather-list unstyled-list">
-        <li class="weather-card weather-card--night">
+        <li v-for="weather in weatherData" class="weather-card weather-card--night">
           <div class="weather-alert">
             <span class="weather-alert__icon">⚠️</span>
             <span class="weather-alert__description">Королевская метеослужба короля Арагорна II: Предвещается наступление сильного шторма.</span>
