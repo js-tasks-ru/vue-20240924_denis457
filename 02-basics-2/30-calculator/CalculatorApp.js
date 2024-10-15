@@ -6,56 +6,50 @@ export default defineComponent({
   setup() {
     const num1 = ref(0)
     const num2 = ref(0)
-    const selectedOperator = ref({})
+    const selectedOperatorCode = ref(undefined)
 
-    const OPERATOR_VALUE = {
+    const OPERATOR_CODE = {
       SUM: 'sum',
       SUBTRACT: 'subtract',
       MULTIPLY: 'multiply',
       DIVIDE: 'divide',
     }
 
-    const operators = [
-      {
-        value: OPERATOR_VALUE.SUM,
+    const operators = {
+      [OPERATOR_CODE.SUM]: {
         sign: '+',
         icon: '➕',
       },
-      {
-        value: OPERATOR_VALUE.SUBTRACT,
+
+      [OPERATOR_CODE.SUBTRACT]: {
         sign: '-',
         icon: '➖',
       },
-      {
-        value: OPERATOR_VALUE.MULTIPLY,
+
+      [OPERATOR_CODE.MULTIPLY]: {
         sign: '*',
         icon: '✖',
       },
-      {
-        value: OPERATOR_VALUE.DIVIDE,
+
+      [OPERATOR_CODE.DIVIDE]: {
         sign: '/',
         icon: '➗',
       },
-    ]
+    }
 
     const result = computed(() => {
       const num1Value = num1.value
       const num2Value = num2.value
-      const operatorSign = selectedOperator.value.sign
-      return num1Value && num2Value && operatorSign ? eval(`${num1Value} ${operatorSign} ${num2Value}`) : 0
+      const operatorSign = selectedOperatorCode.value ? operators[selectedOperatorCode.value].sign : undefined
+      return operatorSign ? eval(`${num1Value} ${operatorSign} ${num2Value}`) : 0
     })
-
-    function handleOperatorChange(operator) {
-      selectedOperator.value = operator
-    }
 
     return {
       num1,
       num2,
-      selectedOperator,
+      selectedOperatorCode,
       operators,
       result,
-      handleOperatorChange,
     }
   },
 
@@ -64,8 +58,8 @@ export default defineComponent({
       <input type="number" aria-label="First operand" v-model="num1" />
 
       <div class="calculator__operators">
-        <template v-for="operator in operators">
-        <label><input type="radio" name="operator" :value="operator.value" :checked="selectedOperator.value == operator.value" @input="handleOperatorChange(operator)"/>{{ operator.icon }}</label>
+        <template v-for="(operator, operatorCode) in operators">
+        <label><input type="radio" name="operator" :value="operatorCode" v-model="selectedOperatorCode" :checked="selectedOperatorCode == operatorCode"/>{{ operator.icon }}</label>
         </template>
       </div>
 
