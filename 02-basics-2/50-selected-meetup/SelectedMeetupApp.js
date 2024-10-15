@@ -5,22 +5,13 @@ export default defineComponent({
   name: 'SelectedMeetupApp',
 
   setup() {
-    const sortedMeetupIds = Array.from({ length: 5 }, (_, x) => x + 1)
-    const minId = sortedMeetupIds[0]
-    const maxId = sortedMeetupIds[sortedMeetupIds.length - 1]
+    const meetupIdSequence = Array.from({ length: 5 }, (_, x) => x + 1)
+    const minId = meetupIdSequence[0]
+    const maxId = meetupIdSequence[meetupIdSequence.length - 1]
 
     const selectedMeetupId = ref(1)
 
     const selectedMeetupData = ref({})
-
-    const meetupIdInfos = computed(() => {
-      return sortedMeetupIds.map((value) => {
-        return {
-          idValue: value,
-          checked: selectedMeetupId.value === value,
-        }
-      })
-    })
 
     watch(selectedMeetupId, (id) => {
       getMeetup(id).then((meetupData) => {
@@ -45,7 +36,7 @@ export default defineComponent({
     }
 
     return {
-      meetupIdInfos,
+      meetupIdSequence,
       selectedMeetupId,
       selectedMeetupData,
       availablePreviousButton,
@@ -61,17 +52,17 @@ export default defineComponent({
         <button class="button button--secondary" type="button" :disabled="!availablePreviousButton" @click="handlePreviousButtonClick">Предыдущий</button>
 
         <div class="radio-group" role="radiogroup">
-          <div class="radio-group__button" v-for="{ idValue, checked } in meetupIdInfos">
+          <div class="radio-group__button" v-for="id in meetupIdSequence">
             <input
-              :id="\`meetup-id-\${idValue}\`"
+              :id="\`meetup-id-\${id}\`"
               class="radio-group__input"
               type="radio"
               name="meetupId"
-              :value="idValue"
+              :value="id"
               v-model="selectedMeetupId"
-              :checked="checked"
+              :checked="selectedMeetupId == id"
             />
-            <label :for="\`meetup-id-\${idValue}\`" class="radio-group__label">{{ idValue }}</label>
+            <label :for="\`meetup-id-\${id}\`" class="radio-group__label">{{ id }}</label>
           </div>
         </div>
 
