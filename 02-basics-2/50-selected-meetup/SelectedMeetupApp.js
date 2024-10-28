@@ -60,7 +60,6 @@ export default defineComponent({
               name="meetupId"
               :value="id"
               v-model="selectedMeetupId"
-              :checked="selectedMeetupId == id"
             />
             <label :for="\`meetup-id-\${id}\`" class="radio-group__label">{{ id }}</label>
           </div>

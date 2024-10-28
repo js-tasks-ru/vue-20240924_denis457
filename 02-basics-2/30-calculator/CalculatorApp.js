@@ -59,7 +59,7 @@ export default defineComponent({
 
       <div class="calculator__operators">
         <template v-for="(operator, operatorCode) in operators">
-        <label><input type="radio" name="operator" :value="operatorCode" v-model="selectedOperatorCode" :checked="selectedOperatorCode == operatorCode"/>{{ operator.icon }}</label>
+        <label><input type="radio" name="operator" :value="operatorCode" v-model="selectedOperatorCode"/>{{ operator.icon }}</label>
         </template>
       </div>
 
